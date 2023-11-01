@@ -1,3 +1,7 @@
+
+
+
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_app/controller/demo_controller.dart';
@@ -21,6 +25,13 @@ class _SearchDemoState extends State<SearchDemo> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    demoController.searchItemController.clear();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
@@ -31,10 +42,6 @@ class _SearchDemoState extends State<SearchDemo> {
             children: [
               TextField(
                 controller: demoController.searchItemController,
-                onChanged: (value) {
-                  // Trigger the search when the text in the TextField changes
-                  demoController.searchItem();
-                },
                 decoration: InputDecoration(
                   hintText: 'search...',
                   border: OutlineInputBorder(
@@ -43,16 +50,12 @@ class _SearchDemoState extends State<SearchDemo> {
                   prefixIcon: const Icon(Icons.search),
                 ),
               ),
-
-              //***************************************************** */
-              // Loader while searching
               if (demoController.isLoading)
                 Center(child: CircularProgressIndicator())
               else
-                // Conditional message when no data is found
-                demoController.dataNotFound
+                demoController.filteredProductList.isEmpty
                     ? Center(
-                        child: Text("No data found"),
+                        child: Text("data not found"),
                       )
                     : ListView(
                         shrinkWrap: true,
@@ -61,9 +64,11 @@ class _SearchDemoState extends State<SearchDemo> {
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: demoController.productList.length,
+                            itemCount:
+                                demoController.filteredProductList.length,
                             itemBuilder: (context, index) {
-                              var products = demoController.productList[index];
+                              var products =
+                                  demoController.filteredProductList[index];
 
                               return Padding(
                                 padding:

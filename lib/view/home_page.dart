@@ -4,6 +4,7 @@ import 'package:gradient_slider/gradient_slider.dart';
 import 'package:product_app/controller/theme_controller.dart';
 import 'package:product_app/view/category_wise_product.dart';
 import 'package:product_app/view/product_list.dart';
+import 'package:product_app/view/search_demo.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,32 +20,30 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: GetBuilder<ThemeController>(
-          builder: (themeController) {
-            return Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Get.to(const ProductListPage());
-                  },
-                  child: const Text("All products"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.to(const CategoryWiseProduct());
-                  },
-                  child: const Text("Category wise data"),
-                ),
-                Switch(
-                  value: themeController.isDarkMode,
-                  onChanged: (value) {
-                    themeController.toggleTheme();
-                  },
-                ),
-              ],
-            );
-          }
-        ),
+        child: GetBuilder<ThemeController>(builder: (themeController) {
+          return Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Get.to(const ProductListPage());
+                },
+                child: const Text("All products"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.to(const CategoryWiseProduct());
+                },
+                child: const Text("Category wise data"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.to(const SearchDemo());
+                },
+                child: const Text("search demo"),
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

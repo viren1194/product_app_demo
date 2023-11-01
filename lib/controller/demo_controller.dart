@@ -9,43 +9,17 @@ class DemoController extends GetxController implements GetxService {
 
   DemoController({required this.apiClient});
   bool isLoading = false;
-
-  bool dataNotFound = false;
   ProductModel? productModel;
 
   List<ProductModel> productList = <ProductModel>[];
+  List<ProductModel> filteredProductList = <ProductModel>[];
 
   TextEditingController searchItemController = TextEditingController();
 
-  Future<void> searchItem() async {
-     dataNotFound = false; // Reset dataNotFound flag
-    isLoading = true;
-    update(); // Notify the UI to show the loader
-    final searchQuery = searchItemController.text;
-    Response response = await apiClient.getData(
-      'https://api.escuelajs.co/api/v1/products/?title=$searchQuery',
-    );
-  isLoading = false; // Hide the loader
-    if (response.statusCode == 200) {
-      // Parse and update the product list with the filtered results
-      final List<dynamic> responseData = response.body;
-      productList.clear(); // Clear the existing list
-      if (responseData.isNotEmpty) {
-        responseData.forEach(
-          (element) {
-            final productModel = ProductModel.fromJson(element);
-            productList.add(productModel);
-          },
-        );
-      } else {
-        dataNotFound = true; // Set the flag if no data is found
-      }
-
-    } else {
-      // Handle error appropriately
-      print("Error");
-    }
-    update();
+  @override
+  void onInit() {
+    super.onInit();
+    searchItemController.addListener(filterProducts); // Listen for text changes
   }
 
   // get product list
@@ -64,12 +38,30 @@ class DemoController extends GetxController implements GetxService {
           },
         );
       }
-
+      filteredProductList.addAll(productList);
+      // searchItemController.clear();
       isLoading = false;
       update();
     } else {
       isLoading = false;
       update();
     }
+  }
+
+  // Filter products based on the search query
+  void filterProducts() {
+    final searchQuery = searchItemController.text.toLowerCase();
+    filteredProductList = productList
+        .where((product) =>
+            product.title != null &&
+            product.title!.toLowerCase().contains(searchQuery))
+        .toList();
+    update();
+  }
+
+  @override
+  void onClose() {
+    searchItemController.dispose();
+    super.onClose();
   }
 }
