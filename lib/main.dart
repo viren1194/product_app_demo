@@ -7,6 +7,7 @@ import 'package:product_app/view/image_post.dart';
 import 'package:product_app/view/login_page.dart';
 import 'package:product_app/view/product_list.dart';
 import 'package:product_app/view/search_demo.dart';
+import 'package:product_app/view/upload_image.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(), // Set your initial theme here
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.light, // Set your initial theme mode here
-      home: const HomePage(),
+      home: const UploadImageScreen(),
     );
   }
 }
