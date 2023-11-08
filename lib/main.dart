@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_app/utils/get_di.dart' as di;
+import 'package:product_app/view/demo.dart';
 import 'package:product_app/view/home_page.dart';
 import 'package:product_app/view/image_post.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(), // Set your initial theme here
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.light, // Set your initial theme mode here
-      home: const UploadImageScreen(),
+      home: const UploadImage(),
     );
   }
 }

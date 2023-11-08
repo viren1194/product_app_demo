@@ -16,14 +16,25 @@ class UploadImage extends StatefulWidget {
 class _ImagePostState extends State<UploadImage> {
   File? image;
   final picker = ImagePicker();
+  bool isLoading = false;
 
   Future<void> getImage() async {
+    setState(() {
+      isLoading = true;
+    });
+
     final picked =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (picked != null) {
-      image = File(picked.path);
-      setState(() {});
+      setState(() {
+        image = File(picked.path);
+        isLoading = false;
+      });
     } else {
+      setState(() {
+        // image = File(picked.path);
+        isLoading = false;
+      });
       print("image not selected");
     }
   }
@@ -63,17 +74,21 @@ class _ImagePostState extends State<UploadImage> {
             onTap: () async {
               await getImage();
             },
-            child: Container(
-              child: image == null
-                  ? const Center(
-                      child: Text("pick image"),
-                    )
-                  : SizedBox(
-                      height: 200,
-                      width: 200,
-                      child: Image.file(File(image!.path).absolute),
-                    ),
-            ),
+            child: isLoading == true
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(
+                    child: image == null
+                        ? const Center(
+                            child: Text("pick image"),
+                          )
+                        : SizedBox(
+                            height: 200,
+                            width: 200,
+                            child: Image.file(File(image!.path).absolute),
+                          ),
+                  ),
           ),
           const SizedBox(
             height: 20,
